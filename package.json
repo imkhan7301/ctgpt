@@ -7,7 +7,8 @@
   },
   "scripts": {
     "build": "tsc",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "validate": "node validate.js"
   },
   "devDependencies": {
     "@vercel/node": "^3.0.0",
