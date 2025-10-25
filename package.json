@@ -1,0 +1,21 @@
+{
+  "name": "ctgpt",
+  "version": "1.0.0",
+  "description": "Serverless API for Shopify product creation",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc --noEmit",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@shopify/shopify-api": "^7.7.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@vercel/node": "^3.0.0",
+    "typescript": "^5.3.0"
+  }
+}
