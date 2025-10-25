@@ -1,6 +1,34 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 /**
+ * Shopify product data interface
+ */
+interface ShopifyProductData {
+  title: string;
+  body_html?: string;
+  vendor?: string;
+  product_type?: string;
+  tags?: string[];
+  variants?: Array<{
+    price?: string;
+    sku?: string;
+    inventory_quantity?: number;
+  }>;
+  [key: string]: unknown;
+}
+
+/**
+ * Shopify API response interface
+ */
+interface ShopifyProductResponse {
+  product: {
+    id: number;
+    title: string;
+    [key: string]: unknown;
+  };
+}
+
+/**
  * Vercel serverless function to create a Shopify product
  * POST /api/create-product
  * 
@@ -57,7 +85,22 @@ export default async function handler(
     }
 
     // Get product data from request body
-    const productData = req.body;
+    const productData = req.body as ShopifyProductData;
+
+    // Validate required fields
+    if (!productData || typeof productData !== 'object') {
+      return res.status(400).json({
+        ok: false,
+        error: 'Invalid request body: product data is required'
+      });
+    }
+
+    if (!productData.title || typeof productData.title !== 'string') {
+      return res.status(400).json({
+        ok: false,
+        error: 'Invalid request body: product title is required'
+      });
+    }
 
     // Create Shopify product using Admin API
     const shopifyUrl = `https://${shopifyStore}/admin/api/${shopifyApiVersion}/products.json`;
@@ -80,7 +123,7 @@ export default async function handler(
       });
     }
 
-    const data = await response.json() as { product: any };
+    const data = await response.json() as ShopifyProductResponse;
     
     return res.status(200).json({ 
       ok: true, 
